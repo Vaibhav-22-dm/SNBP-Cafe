@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <base target="_top">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        header h1,
+        header h2 {
+            margin: 0;
+            padding: 0;
+        }
+
+        .qr-code {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .form-section {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        /* Loader styles */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+            display: none;
+        }
+
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="loader">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <header class="text-center mb-4">
+            <h1>SNBP International School Cafe</h1>
+        </header>
+
+        <form id="mealForm" onsubmit="handleSubmit(event)">
+            <div class="form-section">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="name">Name:</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="rollNo">Roll No:</label>
+                            <input type="text" class="form-control" id="rollNo" name="rollNo" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="class">Class:</label>
+                            <select class="form-control" id="class" name="class" required>
+                                <option value="">Select Class</option>
+                                <option value="I">I</option>
+                                <option value="II">II</option>
+                                <option value="III">III</option>
+                                <option value="IV">IV</option>
+                                <option value="V">V</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Division:</label>
+                            <br>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="division" id="divisionA" value="A"
+                                    required>
+                                <label class="form-check-label" for="divisionA">A</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="division" id="divisionB" value="B"
+                                    required>
+                                <label class="form-check-label" for="divisionB">B</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="division" id="divisionC" value="C"
+                                    required>
+                                <label class="form-check-label" for="divisionC">C</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <b class="mb-3">Meal Selection</b>
+                <table class="table table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Day</th>
+                            <th>Breakfast</th>
+                            <th>Lunch</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Monday</td>
+                            <td><input type="checkbox" id="monday-breakfast" name="monday-breakfast" value="Yes"
+                                    onchange="calculateTotal()"></td>
+                            <td><input type="checkbox" id="monday-lunch" name="monday-lunch" value="Yes"
+                                    onchange="calculateTotal()"></td>
+                        </tr>
+                        <tr>
+                            <td>Tuesday</td>
+                            <td><input type="checkbox" id="tuesday-breakfast" name="tuesday-breakfast" value="Yes"
+                                    onchange="calculateTotal()"></td>
+                            <td><input type="checkbox" id="tuesday-lunch" name="tuesday-lunch" value="Yes"
+                                    onchange="calculateTotal()"></td>
+                        </tr>
+                        <tr>
+                            <td>Wednesday</td>
+                            <td><input type="checkbox" id="wednesday-breakfast" name="wednesday-breakfast" value="Yes"
+                                    onchange="calculateTotal()"></td>
+                            <td><input type="checkbox" id="wednesday-lunch" name="wednesday-lunch" value="Yes"
+                                    onchange="calculateTotal()"></td>
+                        </tr>
+                        <tr>
+                            <td>Thursday</td>
+                            <td><input type="checkbox" id="thursday-breakfast" name="thursday-breakfast" value="Yes"
+                                    onchange="calculateTotal()"></td>
+                            <td><input type="checkbox" id="thursday-lunch" name="thursday-lunch" value="Yes"
+                                    onchange="calculateTotal()"></td>
+                        </tr>
+                        <tr>
+                            <td>Friday</td>
+                            <td><input type="checkbox" id="friday-breakfast" name="friday-breakfast" value="Yes"
+                                    onchange="calculateTotal()"></td>
+                            <td><input type="checkbox" id="friday-lunch" name="friday-lunch" value="Yes"
+                                    onchange="calculateTotal()"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="form-section">
+                <div class="form-group">
+                    <label for="totalAmount">Total Amount:</label>
+                    <input type="text" class="form-control" id="totalAmount" name="totalAmount" readonly>
+                </div>
+                <div class="qr-code">
+                    <iframe src="https://drive.google.com/file/d/1jnn-X3DELE4tv36OKjUJFzSEpYQGoMa6/preview" width="300" height="400"
+                        allow="autoplay"></iframe>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="form-group">
+                    <label for="paymentScreenshot">Upload Payment Screenshot:</label>
+                    <input type="file" class="form-control-file" id="paymentScreenshot" name="paymentScreenshot"
+                        accept="image/*" required>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const breakfastPrice = 50; // Fixed price for breakfast
+        const lunchPrice = 100; // Fixed price for lunch
+
+        function calculateTotal() {
+            let total = 0;
+            if (document.getElementById('monday-breakfast').checked) total += breakfastPrice;
+            if (document.getElementById('monday-lunch').checked) total += lunchPrice;
+            if (document.getElementById('tuesday-breakfast').checked) total += breakfastPrice;
+            if (document.getElementById('tuesday-lunch').checked) total += lunchPrice;
+            if (document.getElementById('wednesday-breakfast').checked) total += breakfastPrice;
+            if (document.getElementById('wednesday-lunch').checked) total += lunchPrice;
+            if (document.getElementById('thursday-breakfast').checked) total += breakfastPrice;
+            if (document.getElementById('thursday-lunch').checked) total += lunchPrice;
+            if (document.getElementById('friday-breakfast').checked) total += breakfastPrice;
+            if (document.getElementById('friday-lunch').checked) total += lunchPrice;
+
+            document.getElementById('totalAmount').value = `INR ${total}`;
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault();
+            document.getElementById('loader').style.display = 'flex';
+            const form = document.getElementById('mealForm');
+            const formData = new FormData(form);
+            const reader = new FileReader();
+
+            reader.onload = function (event) {
+                const base64String = event.target.result.split(',')[1];
+                const fileType = formData.get('paymentScreenshot').type;
+                const fileName = formData.get('paymentScreenshot').name;
+
+                const data = {
+                    name: formData.get('name'),
+                    rollNo: formData.get('rollNo'),
+                    class: formData.get('class'),
+                    division: formData.get('division'),
+                    mondayBreakfast: formData.get('monday-breakfast') ? 'Yes' : 'No',
+                    mondayLunch: formData.get('monday-lunch') ? 'Yes' : 'No',
+                    tuesdayBreakfast: formData.get('tuesday-breakfast') ? 'Yes' : 'No',
+                    tuesdayLunch: formData.get('tuesday-lunch') ? 'Yes' : 'No',
+                    wednesdayBreakfast: formData.get('wednesday-breakfast') ? 'Yes' : 'No',
+                    wednesdayLunch: formData.get('wednesday-lunch') ? 'Yes' : 'No',
+                    thursdayBreakfast: formData.get('thursday-breakfast') ? 'Yes' : 'No',
+                    thursdayLunch: formData.get('thursday-lunch') ? 'Yes' : 'No',
+                    fridayBreakfast: formData.get('friday-breakfast') ? 'Yes' : 'No',
+                    fridayLunch: formData.get('friday-lunch') ? 'Yes' : 'No',
+                    amount: document.getElementById('totalAmount').value,
+                    paymentScreenshot: base64String,
+                    fileType: fileType,
+                    fileName: fileName
+                };
+
+                google.script.run.withSuccessHandler(function (response) {
+                    alert(response);
+                    form.reset();
+                    document.getElementById('totalAmount').value = '';
+                    document.getElementById('loader').style.display = 'none';
+                }).submitForm(data);
+            };
+
+            reader.readAsDataURL(formData.get('paymentScreenshot'));
+        }
+    </script>
+</body>
+
+</html>
